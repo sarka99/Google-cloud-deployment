@@ -1,0 +1,12 @@
+spring:
+  data:
+    mongodb:
+      uri: mongodb://admin:password@mongodb:27017/productsdb?authSource=admin
+      database: productsdb
+      username: admin
+      password: password
+      authentication-database: admin
+
+    redis:
+      host: ${SPRING_REDIS_HOST:redis} # Use environment variable with default value
+      port: ${SPRING_REDIS_PORT:6379}  # Use environment variable with default value
