@@ -27,5 +27,34 @@ jobs:
         run: |
           mvn clean
           mvn -B package --file pom.xml
+          
+      
 
-      # Optional: Add deployment steps here if you have CD configured
+      # This step will build the docker image for this application
+      - name: Build Docker Image
+        uses: actions/build-push-action@v2
+        with:
+          context: .
+          dockerfile: Dockerfile
+          push: false
+          tags: ${{ secrets.DOCKER_HUB_USERNAME}}/products-cicd-demo:$(date-'%Y-%m-%d%H-%M-%S')
+
+
+      # This step logs us in to Docker Hub
+      - name: Login to Docker Hub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME}}
+          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN}}
+
+      # This step will push image to Docker Hub
+      - name: Push Image To Docker Hub
+        uses: actions/build-push-action@v2
+        with:
+          context: .
+          dockerfile: Dockerfile
+          push: true
+          tags: ${{ secrets.DOCKER_HUB_USERNAME}}/products-cicd-demo:$(date-'%Y-%m-%d%H-%M-%S')
+          
+
+
