@@ -3,24 +3,29 @@ name: Build & Deploy Spring Products App
 on:
   push:
     branches:
-      - master
+      - master  # Ensure this matches your default branch (e.g., 'main' if applicable)
 
 jobs:
   build-deploy:
-    name: Build and Deploy Products app
+    name: Build and Deploy Products App
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v2  # Consider using @v3 if available
 
       - name: Setup JDK 17
-        uses: action/setup-java@v3
+        uses: actions/setup-java@v3  # Corrected from 'action/setup-java@v3' to 'actions/setup-java@v3'
         with:
           distribution: 'corretto'
           java-version: 17
+
       - name: Unit tests
         run: mvn -B test --file pom.xml
+
       - name: Build the application
-        run:
-          mvn clean 
+        run: |
+          mvn clean
           mvn -B package --file pom.xml
+
+      # Optional: Add deployment steps here if you have CD configured
